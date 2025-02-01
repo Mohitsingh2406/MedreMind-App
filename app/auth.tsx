@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+    Image,
+} from "react-native";
 import { useRouter } from "expo-router";
-import * as LocalAuthentication from 'expo-local-authentication';
+import * as LocalAuthentication from "expo-local-authentication";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default function AuthScreen() {
     const router = useRouter();
@@ -45,7 +52,7 @@ export default function AuthScreen() {
             });
 
             if (auth.success) {
-                router.replace("/");
+                router.replace("/home");
             } else {
                 setError("Authentication failed. Please try again.");
             }
@@ -56,49 +63,55 @@ export default function AuthScreen() {
             setIsAuthenticating(false);
         }
     };
+
     return (
-        <LinearGradient colors={['#4CAF50', '#2E7D32']} style={styles.container}>
+        <LinearGradient colors={["#4CAF50", "#2E7D32"]} style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.iconContainer}>
-                    <Ionicons name="medical" size={80} color="white" ></Ionicons>
+                    <Ionicons name="medical" size={80} color="white" />
                 </View>
-                <Text style={styles.title}>
-                    MedRemind
-                </Text>
-                <Text style={styles.subtitle}>
-                    Your Personal Medication Reminder
-                </Text>
+
+                <Text style={styles.title}>MedRemind</Text>
+                <Text style={styles.subtitle}>Your Personal Medication Assistant</Text>
+
                 <View style={styles.card}>
-                    <Text style={styles.welcomeText}>
-                        Welcome Back!
-                    </Text>
+                    <Text style={styles.welcomeText}>Welcome Back!</Text>
                     <Text style={styles.instructionText}>
-                        {hasBiometrics ? "Use face ID/TouchID or PIN to access your medication " : "Enter your PIN to access your medication"}
+                        {hasBiometrics
+                            ? "Use Face ID/Touch ID or PIN to access your medications"
+                            : "Enter your PIN to access your medications"}
                     </Text>
-                    <TouchableOpacity style={[styles.button, isAuthenticating && styles.buttonDisabled]}
+
+                    <TouchableOpacity
+                        style={[styles.button, isAuthenticating && styles.buttonDisabled]}
                         onPress={authenticate}
                         disabled={isAuthenticating}
                     >
                         <Ionicons
-                            name={hasBiometrics ? 'finger-print-outline' : 'keypad-outline'}
+                            name={hasBiometrics ? "finger-print-outline" : "keypad-outline"}
                             size={24}
-                            color='white'
+                            color="white"
                             style={styles.buttonIcon}
                         />
-                        <Text
-                            style={styles.buttonText}
-                        >
-                            {isAuthenticating ? 'Verifying...' : hasBiometrics ? 'Authenticate' : 'Enter PIN'}
+                        <Text style={styles.buttonText}>
+                            {isAuthenticating
+                                ? "Verifying..."
+                                : hasBiometrics
+                                    ? "Authenticate"
+                                    : "Enter PIN"}
                         </Text>
                     </TouchableOpacity>
-                    {error && (<View style={styles.errorContainer}>
-                        <Ionicons name="alert-circle" size={20} color={'#f44336'} />
-                        <Text style={styles.errorText}>{error}</Text>
-                    </View>)}
+
+                    {error && (
+                        <View style={styles.errorContainer}>
+                            <Ionicons name="alert-circle" size={20} color="#f44336" />
+                            <Text style={styles.errorText}>{error}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
         </LinearGradient>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -107,32 +120,33 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         padding: 20,
+        justifyContent: "center",
+        alignItems: "center",
     },
     iconContainer: {
         width: 120,
         height: 120,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
         borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         marginBottom: 20,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'white',
+        fontSize: 36,
+        fontWeight: "bold",
+        color: "white",
         marginBottom: 10,
-        textShadowColor: "rgba(0,0,0,0.2)",
+        textShadowColor: "rgba(0, 0, 0, 0.2)",
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 3,
     },
     subtitle: {
         fontSize: 18,
-        color: 'rgba(255,255,255,0.9)',
+        color: "rgba(255, 255, 255, 0.9)",
         marginBottom: 40,
+        textAlign: "center",
     },
     card: {
         backgroundColor: "white",
@@ -195,4 +209,4 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         fontSize: 14,
     },
-})
+});
